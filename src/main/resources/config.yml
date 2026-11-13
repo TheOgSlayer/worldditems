@@ -1,0 +1,109 @@
+# ======================================================================
+# WorldItems config  -  /worlditems reload  to apply changes
+# ======================================================================
+# PLACEHOLDERS (usable in names, lore, messages, commands):
+#   %player%  %online%  %max%  %world%  %world_online%  %ping%
+#
+# ACTIONS (each is "type: value"):
+#   transfer: host:port           send player to another server
+#   menu: <menu-id>               open a menu from the "menus" section
+#   close:                        close the open menu
+#   message: <MiniMessage>        chat message to the player
+#   broadcast: <MiniMessage>      message to everyone
+#   actionbar: <MiniMessage>      action bar text
+#   title: <title>;<subtitle>     title on screen (subtitle optional)
+#   sound: ENTITY_EXPERIENCE_ORB_PICKUP
+#   console: <command>            run as console
+#   player: <command>             run as the player (no slash)
+#   teleport: world,x,y,z[,yaw,pitch]
+#
+# Every item and menu has "enabled: true/false". Disabled items are removed
+# from players' inventories. Toggle in-game: /worlditems toggle <id>
+#
+# Text uses MiniMessage: <green>, <bold>, <gradient:red:blue>, etc.
+# ======================================================================
+
+messages:
+  cooldown: "<red>Please wait a moment."
+  no-permission: "<red>You can't use this."
+
+items:
+  forge-compass:
+    enabled: true
+    material: COMPASS
+    name: "<green><bold>Forge World"
+    lore:
+      - "<gray>Right-click to join the Forge server"
+    slot: 4
+    worlds: ["world"]        # world names, or ["*"] for all worlds
+    click: right             # right | left | any
+    cooldown: 3              # seconds
+    glow: true
+    # permission: "worlditems.forge"   # optional
+    actions:
+      - "message: <yellow>Connecting to Forge World..."
+      - "sound: ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "transfer: forge-name.mcserverhost.com:25565"
+
+  server-info:
+    enabled: true
+    material: BOOK
+    name: "<aqua><bold>Server Info"
+    lore:
+      - "<gray>Right-click for info"
+    slot: 0
+    worlds: ["world"]
+    click: right
+    cooldown: 1
+    actions:
+      - "menu: info"
+
+  # More ideas:
+  # rules:
+  #   material: PAPER
+  #   name: "<yellow>Rules"
+  #   slot: 8
+  #   worlds: ["world"]
+  #   actions:
+  #     - "message: <gold>1. Be kind"
+  #     - "message: <gold>2. No cheating"
+
+menus:
+  info:
+    enabled: true
+    title: "<dark_aqua>Server Info"
+    rows: 3
+    filler: GRAY_STAINED_GLASS_PANE   # optional, remove for no filler
+    items:
+      players:
+        slot: 11
+        material: PLAYER_HEAD
+        name: "<green>Players Online"
+        lore:
+          - "<white>%online%<gray>/<white>%max%"
+          - "<gray>In this world: <white>%world_online%"
+        actions: []
+      you:
+        slot: 13
+        material: NAME_TAG
+        name: "<yellow>You"
+        lore:
+          - "<gray>Name: <white>%player%"
+          - "<gray>Ping: <white>%ping%ms"
+          - "<gray>World: <white>%world%"
+        actions: []
+      forge:
+        slot: 15
+        material: COMPASS
+        name: "<green>Join Forge World"
+        lore:
+          - "<gray>Click to connect"
+        actions:
+          - "close:"
+          - "transfer: forge-name.mcserverhost.com:25565"
+      close:
+        slot: 22
+        material: BARRIER
+        name: "<red>Close"
+        actions:
+          - "close:"

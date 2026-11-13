@@ -1,0 +1,13 @@
+name: WorldItems
+version: 1.0.0
+main: dev.worlditems.WorldItems
+api-version: "1.21"
+description: Per-world locked items that run actions (transfer, commands) when used.
+commands:
+  worlditems:
+    description: Reload or refresh WorldItems
+    usage: /worlditems <reload|list|on|off|toggle>
+    permission: worlditems.admin
+permissions:
+  worlditems.admin:
+    default: op
